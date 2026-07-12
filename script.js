@@ -1120,6 +1120,9 @@
       }
 
       function renderEvent(eventKey, options = {}) {
+        document.body.classList.toggle("event-summer", activeEventKey === "summer");
+        document.body.classList.toggle("event-holiday", activeEventKey === "holiday");
+
         const {
           updateUrl = true,
           scrollToTop = false
@@ -1133,6 +1136,10 @@
         const eventData = getActiveEvent();
 
         document.title = eventData.pageTitle;
+
+        // Controls event-specific page styling, including the faded
+        // Summer Fun background image.
+        document.body.dataset.event = eventData.key;
 
         elements.announcement.innerHTML = eventData.announcement;
         elements.heroEyebrow.textContent = eventData.heroEyebrow;

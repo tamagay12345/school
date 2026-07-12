@@ -456,6 +456,20 @@
       padding: 76px 0 82px;
     }
 
+    /* Faded background displayed only on the Summer Fun 2026 tab. */
+    body[data-event="summer"] .hero {
+      background-image:
+        linear-gradient(rgba(255, 250, 244, 0.91), rgba(255, 250, 244, 0.91)),
+        url("assets/summer-fun-bg.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    body[data-event="holiday"] .hero {
+      background-image: none;
+    }
+
     .hero::before {
       position: absolute;
       top: 60px;
@@ -1786,3 +1800,34 @@
         animation-iteration-count: 1 !important;
       }
     }
+
+
+/* Faded background image for FREE HOLIDAY LESSONS only */
+body.event-holiday .hero::before {
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(rgba(255, 250, 244, 0.92), rgba(255, 250, 244, 0.92)),
+    url("assets/holidayfun-bg.jpg") center / cover no-repeat;
+  content: "";
+  pointer-events: none;
+}
+
+
+/* Greenfields Pinnacle School official logo */
+.brand-mark {
+  overflow: hidden;
+  border: 0;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
