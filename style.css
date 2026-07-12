@@ -1802,20 +1802,15 @@
     }
 
 
-/* Faded background image for FREE HOLIDAY LESSONS only */
-body.event-holiday .hero::before {
-  inset: 0;
-  width: auto;
-  height: auto;
-  border: 0;
-  border-radius: 0;
-  background:
-    linear-gradient(rgba(255, 250, 244, 0.92), rgba(255, 250, 244, 0.92)),
-    url("assets/holidayfun-bg.jpg") center / cover no-repeat;
-  content: "";
-  pointer-events: none;
-}
-
+ /* Faded background displayed only on the FREE HOLIDAY LESSONS tab. */
+    body[data-event="summer"] .hero {
+      background-image:
+        linear-gradient(rgba(255, 250, 244, 0.91), rgba(255, 250, 244, 0.91)),
+        url("assets/holidayfun-bg.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
 
 /* Greenfields Pinnacle School official logo */
 .brand-mark {
