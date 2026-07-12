@@ -1653,16 +1653,6 @@
             JSON.stringify(storedRegistration)
           );
 
-          const whatsappWindow = window.open(
-            whatsappUrl,
-            "_blank",
-            "noopener,noreferrer"
-          );
-
-          if (!whatsappWindow) {
-            elements.sendAgainButton.href = whatsappUrl;
-          }
-
           showThankYou(
             registrationData,
             whatsappUrl
