@@ -2,8 +2,10 @@
       "use strict";
 
       const SCHOOL_WHATSAPP_NUMBER = "2348032193527";
-      const GOOGLE_SHEET_WEB_APP_URL =
+      const SUMMER_SHEET_WEB_APP_URL =
         "https://script.google.com/macros/s/AKfycbwhQYPiP9Uy8CQEi_bYlMjkZfsvZ8bsab5OKQq86ie9d8uqYRDRBZJqTLItBCoF6pmi/exec";
+      const HOLIDAY_SHEET_WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycbxDcFYJ9oULBp3i05EO-YPXEZXS7zkuCeCCYoAP-r5Zk5YzbulAKwV-dF7XqnaFZubDog/exec";
 
       const iconLibrary = {
         coding: `
@@ -1668,8 +1670,13 @@
           };
 
           try {
+            const sheetWebAppUrl =
+              activeEventKey === "holiday"
+                ? HOLIDAY_SHEET_WEB_APP_URL
+                : SUMMER_SHEET_WEB_APP_URL;
+
             await fetch(
-              GOOGLE_SHEET_WEB_APP_URL,
+              sheetWebAppUrl,
               {
                 method: "POST",
                 mode: "no-cors",
