@@ -2,6 +2,8 @@
       "use strict";
 
       const SCHOOL_WHATSAPP_NUMBER = "2348032193527";
+      const GOOGLE_SHEET_WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycbwhQYPiP9Uy8CQEi_bYlMjkZfsvZ8bsab5OKQq86ie9d8uqYRDRBZJqTLItBCoF6pmi/exec";
 
       const iconLibrary = {
         coding: `
@@ -1601,7 +1603,7 @@
 
       elements.registrationForm.addEventListener(
         "submit",
-        (event) => {
+        async (event) => {
           event.preventDefault();
 
           elements.formMessage.classList.remove(
@@ -1630,6 +1632,19 @@
             return;
           }
 
+          const submitButton =
+            elements.registrationForm.querySelector(
+              'button[type="submit"]'
+            );
+
+          const originalButtonText =
+            submitButton ? submitButton.textContent : "";
+
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Saving registration...";
+          }
+
           const formData = new FormData(
             elements.registrationForm
           );
@@ -1637,26 +1652,74 @@
           const registrationData =
             buildRegistrationData(formData);
 
-          const message =
-            buildWhatsAppMessage(registrationData);
-
-          const whatsappUrl =
-            getWhatsAppUrl(message);
-
-          const storedRegistration = {
-            data: registrationData,
-            whatsappUrl
+          const sheetData = {
+            ...registrationData,
+            activities:
+              registrationData.interests ===
+              "All programme activities"
+                ? ["All programme activities"]
+                : registrationData.interests
+                    .split(",")
+                    .map((item) => item.trim())
+                    .filter(Boolean),
+            parentConsent: "Agreed",
+            mediaConsent:
+              registrationData.photoPermission
           };
 
-          sessionStorage.setItem(
-            "greenfieldsRegistration",
-            JSON.stringify(storedRegistration)
-          );
+          try {
+            await fetch(
+              GOOGLE_SHEET_WEB_APP_URL,
+              {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                  "Content-Type":
+                    "text/plain;charset=utf-8"
+                },
+                body: JSON.stringify(sheetData)
+              }
+            );
 
-          showThankYou(
-            registrationData,
-            whatsappUrl
-          );
+            const message =
+              buildWhatsAppMessage(registrationData);
+
+            const whatsappUrl =
+              getWhatsAppUrl(message);
+
+            const storedRegistration = {
+              data: registrationData,
+              whatsappUrl
+            };
+
+            sessionStorage.setItem(
+              "greenfieldsRegistration",
+              JSON.stringify(storedRegistration)
+            );
+
+            showThankYou(
+              registrationData,
+              whatsappUrl
+            );
+          } catch (error) {
+            elements.formMessage.textContent =
+              "The registration could not be saved. Please check your internet connection and try again.";
+
+            elements.formMessage.classList.add(
+              "is-visible"
+            );
+
+            elements.formMessage.scrollIntoView({
+              behavior: "smooth",
+              block: "center"
+            });
+          } finally {
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent =
+                originalButtonText;
+            }
+          }
         }
       );
 
